@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1559740960667.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "8816E116",
+    "lastKnownWriteTime" : 6,
+    "last_content_update" : 1559740960667,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "A01B7C7F",
+        "caption" : "nba_stat",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=nba_stat&cache_key=A01B7C7F",
+        "displayedObservations" : 24691,
+        "environment" : "",
+        "object" : "nba_stat",
+        "preview" : 0,
+        "totalObservations" : 24691,
+        "variables" : 52
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

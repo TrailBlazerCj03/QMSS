@@ -1,0 +1,41 @@
+---
+title: 'HW 1: Create an RMarkdown Report'
+author: "Jiacheng Zhou"
+date: "2019/6/3"
+output: 
+    html_document:
+        toc: true
+        theme: united
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Introduction
+The project I would like to introduce is a research I did last semester in a class called "Urban Informatics". The name of the project is "DATAMINING THE TAXI: Explorative Analysis on Yellow Taxi Trips Based on Zoning Features in Brooklyn". Here is the link of [my project](https://trailblazercj03.github.io/Urban_Info_Final/). Python is used to visualize the taxi trajectory.
+
+This html file has been published to the Rpubs and here's the [link](http://rpubs.com/CJ_McCollum03/QMSS_HW1).
+
+# Context
+## Study Area
+The study area of the project is borough Brooklyn, New York, and the spatial unit that is used is "zoning features".
+
+## Research Aim
+1. To understand the usage and characteristics of the yellow taxi in the borough of Brooklyn in October 2015.
+2. To understand the relationships between people's behaviors of taking yellow cabs and different zoning features, including Residential Districts(R), Commercial Districts (C), Manufacturing Districts (M), Park Areas (P).
+3. To visualize the typical trips and identify the populous/typical trips in Brooklyn.
+
+##Mapping
+Other mapping skills are used such as heat map to show the difference of taxi trips between weekdays and weekends.
+
+# Including Plots
+
+You can also embed plots, for example:
+
+```{r mpg, echo=TRUE}
+m=mtcars
+plot(mtcars$mpg)
+```
+

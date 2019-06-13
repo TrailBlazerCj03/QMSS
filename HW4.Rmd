@@ -1,0 +1,72 @@
+---
+title: "HW4:Practice with Advanced Iteration Functions and Purrr for Lists"
+author: "Jiacheng Zhou"
+date: "2019/6/10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Q1. Convert the data to a tibble data-frame.  Use one or more functions from the Purrr package that subsets list data to subset columns in the data to three unique datasets.  The first should include columns that are factors only (i.e. - categorical data), the second should include columns that are numeric only, and the third should include columns with logical values only.  
+```{r Q1}
+library(tidyverse)
+library(dplyr)
+library(purrr)
+root<-rprojroot::find_rstudio_root_file()
+dataDir<-file.path(root,'Data')
+house_price <- readr::read_csv(file.path(dataDir, "Housing_prices_data.csv"))
+
+factor_house <- keep (house_price, is.character)
+factor_house
+
+num_house <- keep(house_price,is.numeric)
+num_house
+
+logic_house <- keep(house_price, is.logical)
+logic_house
+```
+
+Q2.Using the second dataset from question #1, calculate column means with one of the apply functions.
+```{r Q2}
+mean_col<- lapply(num_house, mean)
+mean_col
+
+```
+
+Q3.
+
++ Using the second dataset from question #1, create a new dataset that only includes the variable indicating sales price (variable name is "SalePrice").
+
++ Search for a categorical variable in the full dataset that you think may be related to the sales price of houses.
+
++ Use the split function to subset this data into a list containing a single dataset for each category of your data.
+```{r Q3}
+SalePrice <- subset(num_house,select = SalePrice)
+SalePrice
+
+split_sale <- split(SalePrice,num_house$GarageArea)
+head(map(split_sale,colMeans,na.rm=TRUE),10)
+
+```
+
+Q4. 
+
++ Convert the full original housing dataset to a tibble data frame and then convert the tibble data frame to a list using as.list().
+
++ Subset the list into two unique lists: 1) a new list that includes a single list element that measures the sales price of Aimes houses (variable name is "SalePrice").  2) a new list that includes a single list element that measures the building type of each home (variable name is "BldgType").
+
++ Lastly, create one more list that appends the the list with building type data to the list with sales price data.
+```{r Q4}
+
+house_price_list <- as.list(house_price)
+SalePrice_aim <- house_price_list$SalePrice
+BldgType <- house_price_list$BldgType
+
+Append_sale <- append(SalePrice_aim,BldgType)
+head(Append_sale,10)
+
+
+
+```

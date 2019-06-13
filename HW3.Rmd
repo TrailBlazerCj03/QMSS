@@ -1,0 +1,66 @@
+---
+title: 'HW 3: Practice Writing Functions and For Loops'
+author: "Jiacheng Zhou"
+date: "2019/6/10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Q1. Write a function that takes a single numerical vector and returns three values, the minimum number, the median, and the maximum number of the vector.  Test your function using the month column of the flights dataset.
+
+Q1b. Explain your reasoning for choosing your function’s name.
+
+A. This function is named as stat because minimum, maxium and median values are all the basic statistics in data analysis.
+```{r Q1}
+library(nycflights13)
+library(dplyr)
+fl <- nycflights13::flights
+fl_mon <- fl$month
+
+stat <-function(x){
+    c(min <-min(x,na.rm = TRUE),
+    med <-median(x,na.rm=TRUE),
+    max <-max(x,na.rm=TRUE))
+}
+stat(fl_mon)
+
+```
+
+Q2.Write a function that categorizes a numerical variable in the flights data into four categories.
+
+Q2b. Explain your reasoning for choosing your function’s name.
+
+A: Because the rationale for such catogory is base on military time so m_time is named after military time.
+
+```{r Q2}
+dep_time <- flights$dep_time
+m_time <- function(x,timer){
+     x %>% mutate(type = case_when(500 <=timer & timer <=1159 ~ 'Morning',
+                                   1200<=timer & timer <=1659 ~ 'Afternoon',
+                                   1700<=timer & timer <= 1859 ~ 'Evening',
+                                   1900<=timer & timer <=2400 | 1<=timer & timer <=459 ~ 'Night'))
+}
+head(m_time(flights, dep_time),10)
+```
+
+Q3. Write a function that calculates the median of all numeric variables in the flights dataset using a for loop.
+
+
+Q3b. Explain your reasoning for choosing your function’s name
+
+A: Since it is required to calculate the median of all numeric values based on the dataset 'flight', the function is named as median_flights.
+
+```{r Q3}
+
+fl_num <-fl %>% select(-c(1, 10, 12, 13, 14, 19)) #select all the varables whose data type is numeric 
+output <- vector('list', ncol(fl_num))
+names(output) <- names(fl_num)
+median_flights <- for (i in names(fl_num)){
+    output[[i]] <- median(fl_num[[i]], na.rm = TRUE)
+}
+
+output
+```

@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/501729/c54db437b5f44ce897bbad20f56cd03b
+bundleId: https://api.rpubs.com/api/v1/document/501729/c54db437b5f44ce897bbad20f56cd03b
+url: http://rpubs.com/CJ_McCollum03/501729
+when: 1559558308.33106

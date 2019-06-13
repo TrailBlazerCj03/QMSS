@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1559742727692.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "3F646A3E",
+    "lastKnownWriteTime" : 11550773376712710,
+    "last_content_update" : 1559742727692,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "759FC1A2",
+        "caption" : "df_merge",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=df_merge&cache_key=759FC1A2",
+        "displayedObservations" : 24691,
+        "environment" : "",
+        "object" : "df_merge",
+        "preview" : 0,
+        "totalObservations" : 24691,
+        "variables" : 53
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

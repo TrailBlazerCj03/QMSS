@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1559740714764.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "65C3CB09",
+    "lastKnownWriteTime" : 6,
+    "last_content_update" : 1559740714764,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "23973BAC",
+        "caption" : "tibble_5",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=tibble_5&cache_key=23973BAC",
+        "displayedObservations" : 313,
+        "environment" : "",
+        "object" : "tibble_5",
+        "preview" : 0,
+        "totalObservations" : 313,
+        "variables" : 1
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

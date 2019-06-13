@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "---\ntitle: 'HW2: Use the Tidyverse to Reshape Data'\nauthor: \"Jiacheng Zhou\"\ndate: \"2019/6/5\"\noutput: html_document\n---\n\n```{r setup, include=FALSE}\nknitr::opts_chunk$set(echo = TRUE)\n```\n\n### Q1: Which NBA player scored the most points in 1991?\n### A: Michael Jordan\n```{r Q1}\nlibrary(tidyverse)\nlibrary(dplyr)\nroot<-rprojroot::find_rstudio_root_file()\ndataDir<-file.path(root,'Data')\nnba_stat <- readr::read_csv(file.path(dataDir, \"Seasons_Stats_NBA.csv\"))\n\ntibble_1 <- nba_stat %>% filter(Year==1991) %>%\n    select(Year, Player, PTS)\nsummary(tibble_1$PTS) #Find out the max points\ntibble_2 <-tibble_1 %>% filter(PTS==2580)\ntibble_2$Player  #Michael Jordan\n```\n\n### Q2: Which player had the best free throw percentage from the year 2000 to the most recent year in the data?   If there are multiple players who have tied for the best percentage, then sort on the column with player names and select the top name in ascending order.\n### A: Aaron Miles\n\n```{r Q2}\ntibble_3 <-nba_stat %>% filter(Year>=2000) %>%\n    select(Year,Player,\"FT%\")\nsummary(tibble_3$`FT%`) #Find out the max FT%.\ntibble_4 <-tibble_3 %>% filter(`FT%`==1) \ntibble_5 <-tibble(Name=tibble_4$Player %>% sort(decreasing=FALSE)) #Aaron Miles\nhead(tibble_5,10)\n\n```\n\n### Q3: Rename the variable \"pos\" to \"position\"\n```{r Q3}\nnba_stat <- nba_stat %>% rename(position=Pos)\n```\n\n### Q4: Use this variable to create two variables that are called \"first_position\" and \"second_position\". \n```{r Q4}\nnba_stat <-nba_stat %>% split(position, into = c(\"first_position\", \"second_position\"), sep=\"-\")\n```\n\n### Q5: Unite these two variables back into a single variable called \"position_united\"\n``` {r Q5}\nnames(nba_stat$position)\n\n```\n\n### Q6: Create two new datasets.\n``` {r Q6}\ndf1 <- nba_stat %>% select(-Age)  #remove Age\ndf2 <- nba_stat %>% select(Year,Player,Age) #select the three columns\ndf1$mergeid <- seq(1,nrow(df1),1) #creat the column 'mergerid'\ndf2$mergeid <- seq(1,nrow(df2),1)\n```\n\n### Q7: Join the two datasets from question six together to recreate the original dataset plus the new merge id.\n```{r Q7}\ndf_merge<- df1 %>% select(-Year,-Player) %>%\n    left_join(df2, by = 'mergeid')\n\n```\n\n### Q8:  Subset the original dataset to 1995.  Group the data by year and team name and then summarise the average number of points per team. (arrange from most to least points.)\n```{r Q8}\nsubset <- nba_stat %>% filter(Year<=1995) %>%\n    arrange(Year, Tm) %>%\n    mutate(avg_pt=)\n\n```",
+    "created" : 1559737254571.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "674034519",
+    "id" : "E231F196",
+    "lastKnownWriteTime" : 1559740800,
+    "last_content_update" : 1559743121079,
+    "path" : "~/Desktop/QMSS/HW2.Rmd",
+    "project_path" : "HW2.Rmd",
+    "properties" : {
+        "last_setup_crc32" : "62A20EA2bb338d19",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

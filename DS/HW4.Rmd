@@ -1,0 +1,19 @@
+---
+title: "HW4:Practice with Advanced Iteration Functions and Purrr for Lists"
+author: "Jiacheng Zhou"
+date: "2019/6/10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Q1: Which NBA player scored the most points in 1991?
+### A: Michael Jordan
+```{r Q1}
+library(tidyverse)
+library(dplyr)
+root<-rprojroot::find_rstudio_root_file()
+dataDir<-file.path(root,'Data')
+nba_stat <- readr::read_csv(file.path(dataDir, "Seasons_Stats_NBA.csv"))
