@@ -7,7 +7,7 @@
 cor_matrix(x)
 }
 \arguments{
-\item{year}{What is the correlation matrix of numeric-only data look like in a specific year?}
+\item{year}{What is the correlation matrix of numeric-only variable look like in a specific year?}
 }
 \description{
 This function helps to return a correlation matrix of numeric value of an individual year.

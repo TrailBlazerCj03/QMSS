@@ -1,0 +1,123 @@
+---
+title: 'HW#5: Create an R Package'
+author: "Jiacheng Zhou"
+date: "2019/6/17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+2.a Create a package using the create_package function.
+```{r create pkg}
+#To make the process look more logical, I select to do the part of 2nd Question first and then the first one.
+library(tidyverse)
+library(dplyr)
+library(purrr)
+library("devtools")
+library(roxygen2)
+library(corrplot)
+root<-rprojroot::find_rstudio_root_file()
+setwd("/Users/Zhoujiacheng/Desktop/QMSS")
+
+#create_package("nba.StatPkg") 
+#Run one time 
+
+dataDir<-file.path(root,'nba.StatPkg/data')
+nba_data <- readr::read_csv(file.path(dataDir, "Seasons_Stats_NBA.csv"))
+```
+
+1. Create three functions and save them into individual R scripts (.R files).  
+2.b Save these .R files into the /R folder of your package.  Add roxygen documentation to the top of all .R functions.  Use the document() function to auto-create documentation for all functions.  Create a data/ folder in your package folder to share the NBA data with end users.install package locally.
+```{r add function1}
+#Function 1: Your input for this function should be an individual year.  Your output should be a data point of interest in the dataset for some player.
+
+#' Highest Assist
+#'
+#' This function allows you to find out the best passers in nba
+#' @param year Who is the best point guard in a specific year? Defaults to 2000.
+#' @keywords assist
+#' @export
+#' @examples
+#' highest_ast()
+highest_ast<-function(x){
+    yr_1<-filter(nba_data,nba_data$Year==x)
+    ast<-arrange(yr_1,desc(AST))
+    output_1<-ast[1,2]
+    return(output_1)
+}
+
+```
+
+```{r add function2}
+#Function 2: Your input for this function should be an individual year.  Your output should be the oldest player in the NBA data for that year (if multiple players have the same age, then decide how to return a single player).
+#'oldest
+#'
+#' This function helps to find out who is the oldest player in a specifc year.
+#' @param year Who is the oldest player in a specifc year? Defaults to 2000
+#' @keywords age
+#' @export
+#' @examples
+#' oldest()
+
+
+
+oldest<-function(x){
+  yr_2<-filter(nba_data,nba_data$Year==x)
+  old<-arrange(yr_2,desc(Age))
+  output_2<-old[1,2]
+  returnValue(output_2)
+}
+
+```
+
+```{r add function3}
+#Function 3: Your input for this function should be an individual year.  Your function should limit the data for that year to include numeric continuous variables only (not categorical data).  Your output should be the correlation matrix for all numeric variables in the data for that year.  (Hint: use cor(data) to create correlation matrix. 
+#' cor_matrix
+#'
+#' This function helps to return a correlation matrix of numeric value of an individual year.
+#' @param year What is the correlation matrix of numeric-only variable look like in a specific year?
+#' @keywords cor_matrix
+#' @export
+#' @examples
+#' cor_matrix()
+
+cor_matrix<-function(x){
+    yr_3<-filter(nba_data,nba_data$Year==x)
+    numeric_var<-keep(yr_3, is.numeric)
+    M <- cor(numeric_var)
+    corrplot(M, method="circle")
+    M
+}
+
+document("./nba.StatPkg") 
+
+#Run one time 
+#install("nba.StatPkg/")   #install pkg locally
+```
+
+3. Start a new publicly available repository on your Github account.  Drag and drop all of the files and folders in your package folder into the upload functionality of your new repository.
+```{r git push}
+#The process of uploading the package
+#git init
+#git add "nba.StatPkg"
+#git commit -m 'first commit'
+#git push
+```
+
+4. Use the Install github function to install your package in R.  
+```{r install pkg}
+#Run one Time
+#install_github('TrailBlazerCJ03/QMSS/nba.StatPkg')  #Use the Install github function to install your package in R.  
+
+```
+
+5. Run each of the functions to ensure that they are working correctly in R
+```{r test}
+library(nba.StatPkg)
+highest_ast(2005)
+oldest(2005)
+cor_matrix(2005)
+
+```

@@ -1,0 +1,72 @@
+---
+title: "HW7_Webscraping"
+author: "Jiacheng Zhou"
+date: "2019/6/26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. The text in the first header of the page
+```{r read html}
+library (rvest)
+
+ncaa_page <- read_html("https://en.wikipedia.org/wiki/2019_NCAA_Division_I_Men%27s_Basketball_Tournament")
+ncaa_page %>%
+  html_nodes ("h1")
+```
+
+2. All links listed on the page.  Use grep() to return any links with "http" in the text of the link.  How many links are there
+```{r all links}
+links<- ncaa_page %>%
+html_nodes("a") %>% 
+  html_attr("href")
+links <-grep("http", links, value=TRUE)
+head(links, 10)
+
+summary(links)
+#There are totally 34 links. 
+```
+
+3. Scrape all tables listed on the page.  How many tables are there?  Extract and print the first ten rows of the first table.
+```{r all table}
+ncaa_table <-ncaa_page%>%
+    html_nodes("table")%>%
+    .[3:4]%>%
+    html_table(fill=TRUE)
+str(ncaa_table)
+# There are 32 tables in total.
+
+Table1 <- ncaa_page %>%
+  html_nodes (xpath='//*[@id="mw-content-text"]/div/table[2]') %>%
+  html_table (fill = TRUE) %>%
+  "[["(1)
+head(Table1,10)
+
+```
+
+4. Scrape all paragraphs on the page.  How many paragraphs are there?  Extract the text of the paragraph nodes.  Use grep to search through all paragraph text and return all paragraphs with the word "championship" in the paragraph text.
+```{r all para}
+p_nodes <- ncaa_page %>%
+  html_nodes ("p")
+length (p_nodes)
+#There are 35 tables in total.
+
+para<-p_nodes%>%
+    html_text()
+
+para <- grep("championship",para,value=TRUE)
+para
+
+```
+
+5. The top right side of the webpage has a box had a title the reads "2019 NCAA Division I".  How would you use developer tools to determine the correct nodes to target to scrape this title?  Find the nodes or node names using developer tools and then scrape this text.  
+```{r right side}
+rs <-ncaa_page %>%
+    html_nodes(xpath='//*[@id="mw-content-text"]/div/table[1]') %>%
+    html_table(fill=TRUE) %>%"[["(1)
+rs
+
+```

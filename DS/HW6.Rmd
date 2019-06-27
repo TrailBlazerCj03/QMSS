@@ -1,0 +1,137 @@
+---
+title: "HW6:Practicing String Operations and Working with APIs"
+author: "Jiacheng Zhou"
+date: "2019/6/24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Part 1: Use string operations to extract tweets from the following Twitter data from @realdonaldtrump
+load(url("http://varianceexplained.org/files/trump_tweets_df.rda"))
+
+After you load the rda file, the data.frame object will be named "trump_tweets_df" and available in your R session.
+
+Use string operations on relevant columns in the data to:
+
+A. return a count of all tweets contain hash tags 
+
+B. return numeric values of all tweets (only numbers) 
+
+C. replace a word of your choice contained in all tweets with a new word of your choice
+```{r data load}
+load(url("http://varianceexplained.org/files/trump_tweets_df.rda"))
+ls()
+head(trump_tweets_df,10)
+
+#return a count of all tweets contain hash tags 
+sum(grepl("#", trump_tweets_df$text))
+
+#return numeric values of all tweets (only numbers) 
+head(gsub("\\D+", "",trump_tweets_df$text ), quote = FALSE,10)
+
+#replace a word of your choice contained in all tweets with a new word of your choice
+China <- grep("China",trump_tweets_df$text, ignore.case = TRUE, value = TRUE)
+gsub("China", replacement = "USA", China)
+
+```
+
+# Use the R script "APIs.R" in the course file folder to answer the following questions:
+1. Refer to the blsAPI package in the R script for week 8.  Can you change the industry code in the API URL so that you return data for Manufacturing layoffs only? Did the value of manufacturing layoffs increase or decrease each year?
+```{r 2-1}
+library(jsonlite)
+library(blsAPI)
+library(dplyr)
+library(ggplot2)
+layoffs_json <- blsAPI('MLUMS00NN0007003') #Manufacture code: N0007
+class(layoffs_json)
+json_file <- fromJSON(layoffs_json)
+class(json_file)
+
+# data is nested within json_file > Results > series > then data
+data_from_api<-json_file$Results$series$data
+data_from_api<-as.data.frame(data_from_api) #convert list to data.frame
+head(data_from_api,10) #print results
+class(data_from_api) #now it's a typical data frame you can analyze in R
+
+#ggplot the value based on year
+data_from_api$year <-as.numeric(data_from_api$year)
+data_from_api$value<-as.numeric(data_from_api$value)
+data_from_api_1 <- data_from_api %>% filter(periodName!= "Annual")%>%
+    mutate(timer= paste(year,period,sep="_"))
+
+ggplot(data=data_from_api_1, mapping = aes(x=timer,y=value))+
+    geom_point(mapping = aes(color=year))+
+    theme(text = element_text(size=8),
+        axis.text.x = element_text(angle=90, hjust=1)) 
+
+#It seems that 2012 and 2011 have the same vlaue but it decreased in 2013.
+
+```
+
+2. Refer to the blsAPI package in the R script for week 8.  Can you change the location code in the API URL you created to return manufacturing jobs so that you return data for New York state only? Did the value of manufacturing layoffs increase or decrease in New York each year?  
+```{r 2-2}
+layoffs_json_ny <- blsAPI('MLUMS36NN0007003')  #New York State code: S36
+json_file_ny <- fromJSON(layoffs_json_ny)
+data_from_api_ny<-json_file_ny$Results$series$data
+data_from_api_ny<-as.data.frame(data_from_api_ny)
+head(data_from_api_ny,10)
+
+#ggplot the value based on year
+data_from_api_ny$year <-as.numeric(data_from_api_ny$year)
+data_from_api_ny$value<-as.numeric(data_from_api_ny$value)
+data_from_api_ny_1 <- data_from_api_ny %>% filter(periodName!= "Annual")%>%
+    mutate(timer= paste(year,period,sep="_"))
+
+ggplot(data=data_from_api_ny_1, mapping = aes(x=timer,y=value))+
+    geom_point(mapping = aes(color=year))+
+        theme(text = element_text(size=8),
+        axis.text.x = element_text(angle=90, hjust=1)) 
+
+#It cannot be indicated as some specific values are missing.
+
+```
+
+3. Refer to the section entitled, "What if there is no R package? Option #1: Manipulate URL directly" in the R script for week 8. Can you change the term used in the New York Times article search API URL so that you return article data for hillary clinton?  How many TOTAL articles were returned by this API search? 
+```{r 2-3}
+article_key <- "zcOzAIPXd3FNW9yaZFz0f2mEJrips0GT"
+term <- "Hillary Clinton"
+begin_date <-"20170101" 
+end_date <- "20190101"
+finalurl <- paste0("http://api.nytimes.com/svc/search/v2/articlesearch.json?q=",term,
+                  "&begin_date=",begin_date,"&end_date=",end_date,
+                  "&api-key=",article_key, sep="")
+
+mydata <- fromJSON(finalurl)
+
+names(mydata) #the list names are different when data is retrieved directly from the API
+
+mydata<-as.data.frame(mydata$response)#extract final data to data.frame
+
+head(mydata,10)
+# Ten articles are retrieved from NYT.
+```
+
+4. Find an API of interest to you.  Sign up for an API key if necessary.  Describe the api concisely AND make a single call on the API and return an example of the returned data here.
+```{r 2-4}
+#Using Twitter API to access tweets realted to #realDonaldTrump.
+#The Twitter's standard search API (search/tweets) allows simple queries against the indices of recent or popular Tweets and behaves similarly to, but not exactly like the Search UI feature available in Twitter mobile or web clients.(Copied From https://developer.twitter.com/en/docs/tweets/search/overview/standard.html)
+
+library(twitteR)
+# Change the next four lines based on your own consumer_key, consume_secret, access_token, and access_secret. 
+consumer_key <- "9N66oSyD2HfZmADFzrx5BpcYC"
+consumer_secret <- "ftvpJwbVxCVlVCYcczICwmaNG8T0cNrBkaSBjJiPoWkdOHygYc"
+access_token <- "1048293511962025984-Ix7hJIWZ5RqplEzMtgie87i48vvk0E"
+access_secret <- "QHBCqJ5bi9nxMmn2E2rsQQ09CFlKT4IM4mtTWtIgcBPxH"
+
+setup_twitter_oauth(consumer_key, consumer_secret, access_token, access_secret)
+
+#Run one time
+tw_Trump <- twitteR::searchTwitter('#realDonaldTrump', n = 1e3, since = '2018-01-01', retryOnRateLimit = 1e3)
+
+result <- twitteR::twListToDF(tw_Trump)
+head(result,10)
+```
+
